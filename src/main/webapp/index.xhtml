@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pt="http://java.sun.com/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+ <title>Authentification</title>
+ <style>
+	.error {color: red}
+</style>
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:panel header="Authentification">
+			<h:panelGrid columns="3" cellpadding="6">
+				<h:outputText value="Login : " />
+					<h:inputText id="login" label="Login" value="#{user.login}"
+											pt:placeholder="Votre nom d'utilisateur" required="true"
+											requiredMessage="Vous devez entrer un nom d'utilisateur." /> 
+					<h:message for="login" styleClass="error"/>
+					<h:outputText value="Password : " />
+					<h:inputSecret id="password" label="Password" value="#{user.password}" 
+												 pt:placeholder="Votre mot de passe" required="true"
+								 				 requiredMessage="Vous devez entrer un mot de passe." /> 
+					<h:message for="password" styleClass="error"/>
+					<h:commandButton value="Submit" action="#{user.connexion()}"/>
+					<h:commandButton value="Reset" type="reset"/>
+				</h:panelGrid>
+    		</p:panel>
+	</h:form>
+
+</h:body>
+
+</html>

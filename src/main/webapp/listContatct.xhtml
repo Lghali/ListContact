@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>List de contact</title>
+	<style>
+		.error {color: red}
+	</style>
+</h:head>
+
+<h:body>
+	<p:dataTable var="contact" value="#{dtBasicView.contacts}">
+		<p:column headerText="Id">
+			<h:outputText value="#{contact.id}" />
+		</p:column>
+
+		<p:column headerText="Nom">
+			<h:outputText value="#{contact.nom}" />
+		</p:column>
+
+		<p:column headerText="Tel">
+			<h:outputText value="#{contact.tel}" />
+		</p:column>
+
+		<p:column headerText="Action">
+			<h:link value="Modifier" outcome="modifier" />
+		</p:column>
+	</p:dataTable>
+</h:body>
+
+</html>
