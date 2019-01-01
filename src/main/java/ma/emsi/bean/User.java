@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -63,16 +64,28 @@ public class User implements Serializable {
 	public String connexion() {
 		UserService userService = new UserService();
 		User user = userService.findByLogin(login);
-		if (user != null && user.password.equals(password)) {
-			return "listContatct";
+		System.out.println(user);
+		if (user != null && user.getPassword().equals(password)) {
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
+			return "listContatct?faces-redirect=true";
 		} else {
-			return "error";
+			clear();
+			return "error?faces-redirect=true";
 		}
 	}
 
-//	public String logout() {
+	public String logout(){
+		System.out.println("User.logout()");
 //		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-//		return "index";
-//	}
+		clear();
+//		FacesContext.getCurrentInstance().getExternalContext().dispatch("index");
+		return "index?faces-redirect=true";
+	}
+
+	public void clear() {
+		setId(null);
+		setLogin(null);
+		setPassword(null);
+	}
 
 }

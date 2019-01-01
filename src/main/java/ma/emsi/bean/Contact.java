@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.apache.log4j.Logger;
+
+import ma.emsi.services.ContactService;
 
 @Entity
 @ManagedBean
@@ -67,5 +70,35 @@ public class Contact implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public String ajouterContact() {
+		ContactService contactService = new ContactService();
+		User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+		contactService.create(new Contact(nom, tel, user));
+		clear();
+		return "listContatct?faces-redirect=true";
+	}
+	
+	public String modifierContact(Long id) {
+		ContactService contactService = new ContactService();
+		Contact contact = contactService.findById(id);
+		contactService.delete(contact);
+		clear();
+		return "listContatct?faces-redirect=true";
+	}
+	
+	public String supprimerContact(Long id) {
+		ContactService contactService = new ContactService();
+		Contact contact = contactService.findById(id);
+		contactService.update(contact);
+		clear();
+		return "listContatct?faces-redirect=true";
+	}
+	
+	public void clear(){
+	    setId(null);
+	    setNom(null);
+	    setTel(null);
 	}
 }

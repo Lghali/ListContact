@@ -94,10 +94,14 @@ public class UserService implements IDao<User>{
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            u = (User) session.get(User.class, login);
+            List<User> users = session.createQuery("select u from User u where u.login=:login").setParameter("login", login).list();;
             tx.commit();
             session.close();
-            return u;
+            if (users.size() == 1)
+            {
+            	return (User) users.get(0);
+            }
+            return null;
         } catch (HibernateException ex) {
             if (tx != null) {
                 tx.rollback();
