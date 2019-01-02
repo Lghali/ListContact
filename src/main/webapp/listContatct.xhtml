@@ -1,84 +1,118 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-	  xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>List de contact</title>
 	<style>
-		.error {color: red}
-		.ui-datatable .ui-datatable-header {
-        	text-align: right !important;
-    	}
-     
-    	.ui-button-text-only .ui-button-text {
-        	padding: 0.3em 0.4em;
-    	}
-     
-    	.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
-        	visibility: hidden;
-    	}
-     
-    	.ui-filter-column .ui-column-customfilter .custom-filter {
-        	width: 100%;
-        	box-sizing: border-box;
-    	}
-     
-    	.year-spinner input {
-        	width: 100%;
-        	box-sizing: border-box;
-    	}
+.error {
+	color: red
+}
+
+.ui-datatable .ui-datatable-header {
+	text-align: right !important;
+}
+
+.ui-button-text-only .ui-button-text {
+	padding: 0.3em 0.4em;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+	visibility: hidden;
+}
+
+.ui-filter-column .ui-column-customfilter .custom-filter {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.year-spinner input {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.ui-paginator a {
+	margin-right: 5px;
+}
 </style>
- 
+
 </h:head>
 
 <h:body>
-<h:form>
-	<p:panel header="Ajouter un contact">
-		<h:panelGrid columns="3" cellpadding="6">
-			<h:outputText value="Nom : " />
-			<p:inputText id="form_nom" label="Nom" value="#{contact.nom}"
-						 required="true"
-						 requiredMessage="Vous devez entrer un nom." /> 
-			<h:message for="form_nom" styleClass="error"/>
-			<h:outputText value="Tel: " />
-			<p:inputText id="form_tel" label="Tel" value="#{contact.tel}" 
-						 required="true"
-						 requiredMessage="Vous devez entrer un num de tel." /> 
-			<h:message for="form_tel" styleClass="error"/>
-			<p:commandButton value="Submit" action="#{contact.ajouterContact()}" ajax="true"
-               				 update="contactTable"/>
-			<p:commandButton value="Reset" type="reset"/>
-		</h:panelGrid>
-    </p:panel>
-</h:form>
+	<h:form id="form1">
+		<p:panel header="Ajouter un contact">
+			<h:panelGrid columns="3" cellpadding="6">
+				<h:outputText value="Nom : " />
+				<p:inputText id="form_nom" label="Nom" value="#{contact.nom}"
+					required="true" requiredMessage="Vous devez entrer un nom." />
+				<h:message for="form_nom" styleClass="error" />
+				<h:outputText value="Tel: " />
+				<p:inputText id="form_tel" label="Tel" value="#{contact.tel}"
+					required="true" requiredMessage="Vous devez entrer un num de tel." />
+				<h:message for="form_tel" styleClass="error" />
+				<p:commandButton value="Submit" action="#{contact.ajouterContact()}"
+					ajax="true" update=":form2:contactTable" />
+				<p:commandButton value="Reset" type="reset" />
+			</h:panelGrid>
+		</p:panel>
+	</h:form>
 
-<h:form id="form1">
-    <p:dataTable id="contactTable" var="con" value="#{dtBasicView.contacts}" widgetVar="contactTable"
-                 emptyMessage="Pas de contact" filteredValue="#{dtFilterView.filteredContacts}">
-        <f:facet name="header">
-            <p:outputPanel>
-                <h:outputText value="Rechercher danr tout les champs:" />
-                <p:inputText id="globalFilter" onkeyup="PF('contactTable').filter()" style="width:150px" placeholder="Enter keyword"/>
-            </p:outputPanel>
-        </f:facet>
-        <p:column filterBy="#{con.id}" headerText="Id" filterMatchMode="contains">
-            <h:outputText value="#{con.id}" />
-        </p:column>
-		<p:column filterBy="#{con.nom}" headerText="Nom" filterMatchMode="contains">
-            <h:outputText value="#{con.nom}" />
-        </p:column>
-		<p:column filterBy="#{con.tel}" headerText="Telephone" filterMatchMode="contains">
-            <h:outputText value="#{con.tel}" />
-        </p:column>
- 		<p:column headerText="Action">
-			<!-- <p:commandButton action="#{contact.modifierContact(con.id)}" value="Modifier" ajax="true" update="contactTable" />
-			<p:commandButton action="#{contact.supprimerContact(con.id)}" value="Supprimer" ajax="true" update="contactTable" /> -->
-		</p:column>
-    </p:dataTable>
-</h:form>
+	<h:form id="form2">
+	<p:panel header="liste des contactes">
+		<p:dataTable id="contactTable" var="contact"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+			paginator="true" rows="10" style="margin-bottom:20px"
+			value="#{dtFilterView.contacts}" widgetVar="contactTable"
+			emptyMessage="Pas de contact avec ces critères"
+			filteredValue="#{dtFilterView.filteredContacts}">
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Rechercher:" />
+					<p:inputText id="globalFilter" onkeyup="PF('contactTable').filter()"
+						style="width:150px" placeholder="Enter keyword" />
+				</p:outputPanel>
+			</f:facet>
+			<f:facet name="{Exporters}">
+				<div style="float: right; padding-top: 5px;">
+
+					<h:commandLink>
+						<p:graphicImage url="/images/csv.png" width="24" />
+						<p:dataExporter type="csv" target="contactTable" fileName="Contacts" />
+					</h:commandLink>
+
+				</div>
+			</f:facet>
+			<p:column headerText="Nom">
+				<h:outputText value="#{contact.nom}" />
+			</p:column>
+			<p:column headerText="Telephone">
+				<h:outputText value="#{contact.tel}" />
+			</p:column>
+
+			<p:column headerText="Action">
+
+
+				<p:commandButton update="contactTable" value="Supprimer"
+					icon="ui-icon-trash"
+					action="#{contact.supprimerContact(contact.id)}"
+					styleClass="ui-state-error">
+				</p:commandButton>
+
+
+				<p:commandButton update="contactTable" value="Modifier"
+					icon="ui-icon-refresh" action="#{contact.modifierContact(contact.id)}"
+					styleClass="ui-state-highlight">
+				</p:commandButton>
+
+			</p:column>
+
+
+		</p:dataTable>
+		</p:panel>
+	</h:form>
 
 </h:body>
 

@@ -14,7 +14,7 @@ public interface IDao<T> {
 
 	boolean delete(T o);
 
-	T findById(Long id);
+	public T findById(Long id);
 
-	List<T> findAll();
+	public List<T> findAll();
 }

@@ -2,9 +2,8 @@ package ma.emsi.bean;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Locale;
-import javax.annotation.PostConstruct;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 
@@ -15,31 +14,19 @@ import ma.emsi.services.ContactService;
 public class FilterView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	private List<Contact> contacts;
+	ContactService service = new ContactService();
+	private List<Contact> contacts = service.findAll();
 
 	private List<Contact> filteredContacts;
 
+	@SuppressWarnings("restriction")
 	@PostConstruct
 	public void init() {
-		ContactService contactService = new ContactService();
-		contacts = contactService.findAll();
-	}
-
-	public boolean filterByPrice(Object value, Object filter, Locale locale) {
-		String filterText = (filter == null) ? null : filter.toString().trim();
-		if (filterText == null || filterText.equals("")) {
-			return true;
-		}
-
-		if (value == null) {
-			return false;
-		}
-
-		return ((Comparable) value).compareTo(Integer.valueOf(filterText)) > 0;
+		contacts = service.findAll();
 	}
 
 	public List<Contact> getContacts() {
+		
 		return contacts;
 	}
 

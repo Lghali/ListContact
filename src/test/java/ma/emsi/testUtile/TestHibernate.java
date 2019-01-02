@@ -2,6 +2,8 @@ package ma.emsi.testUtile;
 
 import org.apache.log4j.Logger;
 
+import ma.emsi.bean.User;
+import ma.emsi.services.UserService;
 import ma.emsi.util.HibernateUtil;
 
 public class TestHibernate {
@@ -13,9 +15,11 @@ public class TestHibernate {
 		
 		log.info("Premier test de log4j.");
 		
-//		UserService userService = new UserService();
-//		User user = new User("lghali", "lghali");
-//		userService.create(user);
+		UserService userService = new UserService();
+		User user1 = new User("lghali", "lghali");
+		User user2 = new User("hamza", "hamza");
+		userService.create(user1);
+		userService.create(user2);
 		
 	}
 }

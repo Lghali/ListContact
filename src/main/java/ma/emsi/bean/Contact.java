@@ -19,7 +19,7 @@ import ma.emsi.services.ContactService;
 @ManagedBean
 @SessionScoped
 public class Contact implements Serializable {
-	
+
 	public static Logger log = Logger.getLogger(Contact.class);
 
 	private static final long serialVersionUID = 1L;
@@ -71,34 +71,34 @@ public class Contact implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public String ajouterContact() {
-		ContactService contactService = new ContactService();
+		ContactService service = new ContactService();
 		User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-		contactService.create(new Contact(nom, tel, user));
+		service.create(new Contact(nom, tel, user));
 		clear();
 		return "listContatct?faces-redirect=true";
 	}
-	
+
 	public String modifierContact(Long id) {
-		ContactService contactService = new ContactService();
-		Contact contact = contactService.findById(id);
-		contactService.delete(contact);
+		ContactService service = new ContactService();
+		Contact contact = service.findById(id);
+		service.update(contact);
 		clear();
 		return "listContatct?faces-redirect=true";
 	}
-	
+
 	public String supprimerContact(Long id) {
-		ContactService contactService = new ContactService();
-		Contact contact = contactService.findById(id);
-		contactService.update(contact);
+		ContactService service = new ContactService();
+		Contact contact = service.findById(id);
+		service.delete(contact);
 		clear();
 		return "listContatct?faces-redirect=true";
 	}
-	
-	public void clear(){
-	    setId(null);
-	    setNom(null);
-	    setTel(null);
+
+	public void clear() {
+		setId(null);
+		setNom(null);
+		setTel(null);
 	}
 }
